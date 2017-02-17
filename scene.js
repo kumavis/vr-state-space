@@ -5,12 +5,14 @@ const scale = require('gl-mat4/scale')
 
 const generateBun = require('./node_modules/regl-vr/example/bunny')
 const generateWireBun = require('./node_modules/regl-vr/example/wire')
+const generateTextDrawer = require('./text')
 
 module.exports = function({ regl }){
 
   // instantiate bun renderers
   const drawNormyBun = generateBun({ regl })
   const drawWireBun = generateWireBun({ regl })
+  const drawText = generateTextDrawer({ regl })
 
   const buns = []
 
@@ -25,6 +27,8 @@ module.exports = function({ regl }){
     buns.forEach((bun) => {
       bunJump({ tick, offset: bun.offset, matrix: bun.matrix})
     })
+
+    drawText()
 
     // draw buns
     buns.forEach((bun) => {

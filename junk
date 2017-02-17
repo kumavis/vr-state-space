@@ -1,0 +1,4 @@
+
+    float roll(float value, int tick) {
+      return value*(1.+sin(float(tick)/5.)/2.);
+    }
