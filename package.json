@@ -1,0 +1,23 @@
+{
+  "name": "vr-state-space",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify example.js -o ./bundle.js",
+    "start": "beefy index.js:bundle.js --live"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angle-normals": "^1.0.0",
+    "bunny": "^1.0.1",
+    "gl-mat4": "^1.1.4",
+    "gl-quat": "^1.0.0",
+    "regl": "^1.3.0",
+    "regl-vr": "^1.0.1"
+  },
+  "devDependencies": {
+    "beefy": "^2.1.8"
+  }
+}
