@@ -120,9 +120,9 @@ module.exports = function generateTextDrawer({ regl }) {
       // position on virtual screen (screenWidth,screenHeight)
       vec2 vPos = floor(( gl_FragCoord.xy /resolution.xy ) * vec2(screenWidth, screenHeight));
       // apply ink?
-      vec3 pixel = vec3 ( 0);
+      vec3 pixel = vec3 (0);
       // cursor position
-      vec2 cursor = vec2(paddingLeft,27. - paddingTop);
+      vec2 cursor = vec2(paddingLeft,(screenHeight - charHeight - paddingTop));
       // ink color
       vec3 ink = vec3(0,0,1);
 
