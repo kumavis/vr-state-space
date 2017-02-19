@@ -1,26 +1,28 @@
 const vec2 = require('gl-vec2')
 const vectorizeText = require('vectorize-text')
+const BlockTracker = require('eth-block-tracker')
+const HttpProvider = require('ethjs-provider-http')
 
 module.exports = function generateTextDrawer({ regl }) {
 
   // cache text mesh
-  let currentText = undefined
-  let textMesh = undefined
-
-  generateTextMesh()
+  let textMeshCache = {}
+  let currentMesh = null
 
   // 'Block #3,141,592'
-  function generateTextMesh(props = {}) {
+  function getTextMesh(props = {}) {
     text = props.text
-    if (!text) return textMesh = { positions: [], cells: [] }
-    if (currentText === text) return
-    currentText = text
-    textMesh = vectorizeText(text, {
+    if (!text) return { positions: [], cells: [] }
+    const cachedMesh = textMeshCache[text]
+    if (cachedMesh) return cachedMesh
+    const newMesh = vectorizeText(text, {
       textAlign: 'center',
       textBaseline: 'hanging',
       // width: 500,
       triangles: true,
     })
+    textMeshCache[text] = newMesh
+    return newMesh
   }
 
   const drawText = regl({
@@ -43,10 +45,10 @@ module.exports = function generateTextDrawer({ regl }) {
     }`,
 
     attributes: {
-      position: () => textMesh.positions,
+      position: () => currentMesh.positions,
     },
 
-    elements: () => textMesh.cells,
+    elements: () => currentMesh.cells,
 
     uniforms: {
       model: regl.prop('model'),
@@ -57,7 +59,7 @@ module.exports = function generateTextDrawer({ regl }) {
   })
 
   return (props) => {
-    generateTextMesh({ text: props.text })
+    currentMesh = getTextMesh({ text: props.text })
     drawText(props)
   }
 
